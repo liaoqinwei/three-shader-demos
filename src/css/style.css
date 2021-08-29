@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+}
+
+.body,html{
+    overflow-x: hidden;
+}
+
+canvas.webgl{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
