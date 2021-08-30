@@ -26,8 +26,8 @@ module.exports = {
                 {
                     from: path.join(__dirname, '../public'),
                     filter(f) {
-                        const ignoreFiles = ['E:/threejs/threejs-init/public/index.html']
-                        return !ignoreFiles.includes(f)
+                        const ignoreFiles = ['../public/index.html']
+                        return !ignoreFiles.some(p => path.join(__dirname, p) === path.resolve(f))
                     },
                     info: { minimized: true },
                     noErrorOnMissing: true // ignore error on file not find

@@ -61,6 +61,20 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 renderer.render(scene, camera)
 
+// Resize
+const onWindowReset = () => {
+    size.width = window.innerWidth
+    size.height = window.innerHeight
+
+    // update
+    camera.aspect = size.width / size.height
+    camera.updateProjectionMatrix()
+
+    renderer.setSize(size.width, size.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+}
+window.addEventListener('resize', onWindowReset)
+
 
 // Animation
 
