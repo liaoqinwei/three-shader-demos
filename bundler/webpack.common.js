@@ -44,14 +44,6 @@ module.exports = {
                 exclude: [path.join(__dirname, '../public/index.html')],
                 use: ['html-loader']
             },
-            // CSS
-            {
-                test: /\.(css)$/,
-                use: [
-                    MiniCSSExtractPlugin.loader,
-                    'css-loader'
-                ]
-            },
             // JS
             {
                 test: /\.(js)$/,

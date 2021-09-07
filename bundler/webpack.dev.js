@@ -5,11 +5,22 @@ const { merge } = require('webpack-merge')
 const commonConfiguration = require('./webpack.common.js')
 const { nextTick } = require('process')
 
+
 const infoColor = (message) => `\u001b[1m\u001b[34m${message}\u001b[39m\u001b[22m`
 
 
 module.exports = merge(commonConfiguration, {
     mode: 'development',
+    module:{
+        rules:[
+            {
+                test: /\.(css)$/,
+                use: [
+                    'style-loader','css-loader'
+                ]
+            },
+        ]
+    },
     devServer: {
         host: 'local-ipv4', // host
         port: portFinderSync.getPort(8080), // port
