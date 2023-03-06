@@ -73,8 +73,16 @@ module.exports = {
                         }
                     }
                 ]
-            }
-
+            },
+            // glsl frag 
+            {
+                test: /\.(vert|frag)$/,
+                use: [
+                    {
+                        loader: 'raw-loader',
+                    }
+                ]
+            },
         ]
     }
 }
