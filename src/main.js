@@ -32,6 +32,9 @@ import vert6 from "./shader6/shader.vert"
 import frag7 from "./shader7/shader.frag"
 import vert7 from "./shader7/shader.vert"
 
+import frag8 from "./shader8/shader.frag"
+import vert8 from "./shader8/shader.vert"
+
 
 // DEBUG
 const gui = new dat.GUI()
@@ -91,6 +94,7 @@ const scene = new THREE.Scene()
         sizes.push(THREE.MathUtils.randInt(10, 40));
         lifes.push(THREE.MathUtils.randFloat(1, 10));
     }
+
     const attr = new THREE.Float32BufferAttribute(vertices, 3)
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', attr);
@@ -111,7 +115,8 @@ const scene = new THREE.Scene()
         transparent: true,
         depthTest: true,
         depthWrite: false,
-        blendDstAlpha: true
+        blendDstAlpha: true,
+        blending: THREE.AdditiveBlending
         // wireframe: true
     })
     const points = new THREE.Points(geometry, material);
@@ -320,9 +325,9 @@ THREE.UniformsLib.line = {
         new THREE.Vector3(-5, 0, 0),
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(5, 0, 0),
-        new THREE.Vector3(10, 0, 0),
+        new THREE.Vector3(10, 0, -20),
         new THREE.Vector3(20, 0, 0),
-        new THREE.Vector3(30, 0, 10)
+        new THREE.Vector3(30, 0, 60)
 
     ]
     const spline = new THREE.CatmullRomCurve3(vects);
@@ -349,10 +354,44 @@ THREE.UniformsLib.line = {
     requestAnimationFrame(task)
 
     const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    // scene.add(mesh);
 }
 
+// 点测试
+{
+    const points = []
+    for (let i = 0; i < 1000; i++) {
+        let x = THREE.MathUtils.randFloat(0, 10);
+        let y = THREE.MathUtils.randFloat(0, 10);
+        let z = THREE.MathUtils.randFloat(0, 10);
 
+        points.push(x, y, z)
+    }
+    points.push(0, 0, 0)
+
+    const geo = new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(points, 3))
+    const mat = new THREE.RawShaderMaterial({
+        vertexShader: vert8,
+        fragmentShader: frag8,
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+        blending: THREE.CustomBlending,
+        blendEquation:THREE.AddEquation,
+        blendSrc:THREE.SrcColorFactor,
+        blendDst:THREE.SrcColorFactor,
+        // blendEquationAlpha:THREE.AddEquation,
+        // blendSrcAlpha:THREE.OneFactor,
+        // blendDstAlpha:THREE.OneFactor,
+
+        uniforms: {
+            u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        }
+    })
+    scene.add(new THREE.Mesh(new THREE.BoxGeometry(40,40, 5), new THREE.MeshBasicMaterial({ color: 0x15842,blending:THREE.NoBlending,transparent:true })))
+    const point = new THREE.Points(geo, mat)
+    scene.add(point);
+}
 
 // Lights
 const ambLight = new THREE.AmbientLight(0xFFFFFF, 1)
